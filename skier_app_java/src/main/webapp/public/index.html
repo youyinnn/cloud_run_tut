@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="abox">
+        <div class="boxitem" style="background-color: darkgrey;">
+            <p>Post Request Demo for "Write a new lift ride for the skier"</p>
+        </div>
+        <hr>
+        <div id="postForm" action="http://www.xxx.com" method="POST">
+            <div class="boxitem">
+                <p for="say">Final API URL</p>
+                <input disabled id="finalUrl" />
+                <input disabled id="api" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Endpoint URL (e.g http://host:port/context/skiers)</p>
+                <input id="url" value="http://localhost:8080/coen6731/skiers" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Resort ID (int)</p>
+                <input id="resortID" value="123" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Season ID</p>
+                <input id="seasonID" value="456" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Day ID</p>
+                <input id="dayID" value="789" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Skier ID (int)</p>
+                <input id="skierID" value="3123" />
+            </div>
+
+            <div class="boxitem">
+                <p for="to">Request Body (should be JSON format)</p>
+                <textarea id="body" name="body" maxlength="50" placeholder="Please enter valid json data.">
+{
+    "time": 217,
+    "liftID": 21
+}
+</textarea>
+            </div>
+
+            <div class="boxitem">
+                <p style="text-align: right; width: 98%;">
+                    <button id="sendPost">Send</button>
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="boxitem">
+            <p id="count">Response Or Error Messages (current request of this session: 0)</p>
+        </div>
+        <div class="output" id="output"></div>
+    </div>
+
+    <div class="abox">
+        <div class="boxitem" style="background-color: darkgrey;">
+            <p>Get Request Demo for "Get ski day vertical for a skier"</p>
+        </div>
+        <div id="getForm" action="http://www.xxx.com" method="POST">
+            <div class="boxitem">
+                <p for="say">Final API URL</p>
+                <input disabled id="finalUrlGet" />
+                <input disabled id="apiGet" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Endpoint URL (e.g http://host:port/context/skiers)</p>
+                <input id="urlGet" value="http://localhost:8080/coen6731/skiers" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Resort ID (int)</p>
+                <input id="resortIDGet" value="123" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Season ID</p>
+                <input id="seasonIDGet" value="456" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Day ID</p>
+                <input id="dayIDGet" value="789" />
+            </div>
+
+            <div class="boxitem">
+                <p for="say">Skier ID (int)</p>
+                <input id="skierIDGet" value="3123" />
+            </div>
+        </div>
+
+        <div class="boxitem">
+            <p style="text-align: right; width: 98%;">
+                <button id="sendGet">Send</button>
+            </p>
+        </div>
+
+        <div class="boxitem">
+            <p id="countGet">Response Or Error Messages (current request of this session: 0)</p>
+        </div>
+        <div class="output" id="outputGet"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>

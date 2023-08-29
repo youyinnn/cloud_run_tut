@@ -1,0 +1,87 @@
+.abox {
+  width: 600px;
+  position: relative;
+  top: 0;
+  margin-top: 1em !important;
+  margin: auto;
+  left: 0;
+  right: 0;
+  border: 1px black solid;
+}
+
+.unselectable,
+.unselectable * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.undragable,
+.undragable * {
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+}
+
+body,
+html {
+  backface-visibility: hidden;
+  letter-spacing: 0.002in;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+h4 {
+  font-size: 1.1em !important;
+}
+h5 {
+  font-size: 1em !important;
+}
+h6 {
+  font-size: 0.95em !important;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background-color: rgba(117, 120, 124, 0.3);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #3f4751;
+}
+*::-webkit-scrollbar-thumb:window-inactive {
+  background: #d8dde4;
+}
+
+p {
+  margin: 0 0.2em 0.5em;
+}
+
+.boxitem {
+  margin: 0.2em 0.5em;
+}
+
+input,
+textarea {
+  width: 97.5%;
+  margin: 0 0.2em 0.5em;
+}
+
+textarea {
+  height: 100px;
+}
+
+.output {
+  margin: 0.5rem;
+  padding: 0.5em;
+  border: 1px solid;
+  overflow-wrap: break-word;
+  min-height: 80px;
+}
