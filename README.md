@@ -297,3 +297,6 @@ Go to the LOGS of the service. The payload and the number of rows are printed.
 
 <img src="img/image-20230829220830791.png" alt="image-20230829220830791" style="zoom: 33%;" />
 
+Finally, you can query the iris data from the created table in BigQuery:
+
+![image-20230829223859264](img/image-20230829223859264.png)
