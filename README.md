@@ -1,9 +1,6 @@
 ## <COEN6313: Programming On Cloud> TUT: Google Cloud Run
 
-This tutorial will go through three demo projects for two use cases using Google Cloud Run.
-
-This tutorial showcases two use cases: (1) [Web services: Websites](https://cloud.google.com/run/#section-6) and  (2) [Data processing: Lightweight data transformation]( https://cloud.google.com/run/#section-6).
-
+This tutorial will go through three demo projects for two use cases: (1) [Web services: Websites](https://cloud.google.com/run/#section-6) and  (2) [Data processing: Lightweight data transformation]( https://cloud.google.com/run/#section-6) using Google Cloud Run.
 
 
 Before you dive into the coding, you should study the following materials. No need to operate on the Cloud Run.
