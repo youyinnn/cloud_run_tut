@@ -12,12 +12,17 @@ def hello_world():
 
     return f"Hello World!!!@@@!!!"
 
-@app.route("/event", methods=['POST'])
-def event_receiver():
+@app.route("/event_looks", methods=['POST'])
+def event_looks():
     print(request.method)
     payload = json.loads(request.data)
     print(payload)
-    
+
+
+@app.route("/event_receive", methods=['POST'])
+def event_receiver():
+    payload = json.loads(request.data)
+        
     file_name = payload['name']
     bucket_name = payload['bucket']
     
