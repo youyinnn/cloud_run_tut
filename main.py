@@ -10,9 +10,10 @@ from google.cloud import bigquery
 def hello_world():
     """Example Hello World route."""
 
-    if request.method == 'GET':
-        return f"Hello World!!!@@@!!!"
-    
+    return f"Hello World!!!@@@!!!"
+
+@app.route("/event", methods=['POST'])
+def event_receiver():
     payload = json.loads(request.data)
     print(payload)
     file_name = payload['name']
@@ -49,7 +50,5 @@ def hello_world():
     destination_table = client.get_table(table_id)  # Make an API request.
     print("Loaded {} rows.".format(destination_table.num_rows))
     
-    return f"Hello World!!!@@@!!!"
-
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
