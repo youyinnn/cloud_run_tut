@@ -24,6 +24,7 @@ def event_looks():
 @app.route("/event_receive", methods=['POST'])
 def event_receiver():
     payload = json.loads(request.data)
+    print(payload)
         
     file_name = payload['name']
     bucket_name = payload['bucket']
