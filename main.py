@@ -17,6 +17,8 @@ def event_looks():
     print(request.method)
     payload = json.loads(request.data)
     print(payload)
+    
+    return "Event Received"
 
 
 @app.route("/event_receive", methods=['POST'])
@@ -56,6 +58,9 @@ def event_receiver():
 
     destination_table = client.get_table(table_id)  # Make an API request.
     print("Loaded {} rows.".format(destination_table.num_rows))
+    
+    return "Event Received"
+    
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
