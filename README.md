@@ -1,4 +1,4 @@
-## <COEN6313: Programming On Cloud> TUT: Google Cloud Run
+# <COEN6313: Programming On Cloud> TUT: Google Cloud Run
 
 This tutorial will go through three demo projects for two use cases: (1) [Web services: Websites](https://cloud.google.com/run/#section-6) and  (2) [Data processing: Lightweight data transformation]( https://cloud.google.com/run/#section-6) using **Google Cloud Run**, **Cloud Storage**, **Eventarc (pronunciation: event arch)**, and **BigQuery** services of the Google Cloud Platform.
 
@@ -34,7 +34,7 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 
 
 
-## Preliminary Setup
+# 1. Preliminary Setup
 
 1. Create a Project Space for your work at https://cloud.google.com/?hl=en.
 
@@ -69,7 +69,7 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 
 
 
-## Use Case 1: Web Application
+# 2. Use Case 1: Web Application
 
 There are three approaches to deploying your project as services to Cloud Run: 
 
@@ -79,7 +79,7 @@ There are three approaches to deploying your project as services to Cloud Run:
 
 This tutorial walks through the last two approaches.
 
-### Approach 1: Deploy from a Git Repository
+## 2.1 Approach 1: Deploy from a Git Repository
 
 Deploying projects on GitHub to Cloud Run can enable the CI/CD workflow between Google Cloud Platform and GitHub. 
 
@@ -168,7 +168,7 @@ Please work on the following steps:
 
 
 
-### Approach 2: Deploy from Local Source Code using Google Cloud CLI
+## 2.2 Approach 2: Deploy from Local Source Code using Google Cloud CLI
 
 Sometimes, you may want to deploy your local work to the cloud for debugging. One simple way is to deploy your code using **Google Cloud CLI**.
 
@@ -225,13 +225,13 @@ To continually deploy your local changes, you can re-run the `gcloud run deploy`
 
 
 
-## Use Case 2: Automated Data Transformation
+# 3. Use Case 2: Automated Data Transformation
 
 To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. <u>**We deploy a web application with Cloud Run as the receiver.**</u>
 
 
 
-#### Find Out What the Event Message Looks Like
+## 3.1 Find Out What the Event Message Looks Like
 
 Before that, you need to know <u>how the event has been received and what you will receive</u>.
 
@@ -275,7 +275,7 @@ Now you know what is the incoming request from Eventarc.
 
 
 
-#### Receive Events for Data Transformation
+## 3.2 Receive Events for Data Transformation
 
 Program the Python application to get the uploaded file and store it in the BigQuery by using the API Client Libraries:
 
