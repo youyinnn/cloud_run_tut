@@ -10,8 +10,8 @@ from google.cloud import bigquery
 def hello_world():
     """Example Hello World route."""
 
-    # print(request.method)
-    # print(request.data)
+    if request.method == 'GET':
+        return f"Hello World!!!@@@!!!"
     
     payload = json.loads(request.data)
     print(payload)
