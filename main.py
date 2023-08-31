@@ -14,8 +14,10 @@ def hello_world():
 
 @app.route("/event", methods=['POST'])
 def event_receiver():
+    print(request.method)
     payload = json.loads(request.data)
     print(payload)
+    
     file_name = payload['name']
     bucket_name = payload['bucket']
     
