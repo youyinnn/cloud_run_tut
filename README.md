@@ -1,21 +1,21 @@
 # <COEN6313: Programming On Cloud> TUT: Google Cloud Run
 
-This tutorial will go through three demo projects for two use cases: (1) [Web services: Websites](https://cloud.google.com/run/#section-6) and  (2) [Data processing: Lightweight data transformation]( https://cloud.google.com/run/#section-6) using **Google Cloud Run**, **Cloud Storage**, **Eventarc (pronunciation: event arch)**, and **BigQuery** services of the Google Cloud Platform.
+This tutorial will go through three demo projects for two use cases: (1) [Web services: Websites](https://cloud.google.com/run/#section-6) and (2) [Data processing: Lightweight data transformation](https://cloud.google.com/run/#section-6) using **Google Cloud Run**, **Cloud Storage**, **Eventarc (pronunciation: event arch)**, and **BigQuery** services of the Google Cloud Platform.
 
+Before you dive into the coding, you should study the following materials.
 
-
-Before you dive into the coding, you should study the following materials. 
-
-No need to operate on the Cloud Run, just understand the concepts and know what you will probably do.
+There is no need to operate on the Cloud Run; just understand the concepts and know what you will probably do.
 
 - Cloud Run:
 
   - Overall:
+
     - [What is Cloud Run](https://cloud.google.com/run/docs/overview/what-is-cloud-run): You should understand the concept of "Cloud Run Services" and "Clould Run Jobs."
 
     - [Is my app a good fit for Cloud Run?](https://cloud.google.com/run/docs/fit-for-run): You should know what kind of work suits Google Cloud Run.
 
   - For Use Case 1:
+
     - [Quickstart: Deploy to Cloud Run from a Git Repository](https://cloud.google.com/run/docs/quickstarts/deploy-continuously#cloudrun_deploy_continuous_code-python)
 
     - [Deploy a Python Service to Cloud Run from Source Code](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-service)
@@ -31,9 +31,6 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 - BigQuery:
   - [What is BigQuery](https://cloud.google.com/bigquery/docs/introduction)
 
-
-
-
 # 1. Preliminary Setup
 
 1. Create a Project Space for your work at https://cloud.google.com/?hl=en.
@@ -42,13 +39,13 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 
    Verify if the tools by the command:
 
-   ``` bash
+   ```bash
    gcloud -v
    ```
 
    and you should get the following output:
 
-   ``` bash
+   ```bash
    Google Cloud SDK 444.0.0
    bq 2.0.97
    core 2023.08.22
@@ -58,7 +55,7 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 
 3. Enable Google Cloud APIs:
 
-   ``` bash
+   ```bash
    gcloud services enable run.googleapis.com \
        eventarc.googleapis.com \
        storage.googleapis.com \
@@ -67,11 +64,9 @@ No need to operate on the Cloud Run, just understand the concepts and know what 
 
 4. (Optional) Install docker in your local to debug with your Dockerfile.
 
-
-
 # 2. Use Case 1: Web Application
 
-There are three approaches to deploying your project as services to Cloud Run: 
+There are three approaches to deploying your project as services to Cloud Run:
 
 1. from a published docker image;
 2. <u>from a GitHub repository;</u>
@@ -81,15 +76,15 @@ This tutorial walks through the last two approaches.
 
 ## 2.1 Approach 1: Deploy from a Git Repository
 
-Deploying projects on GitHub to Cloud Run can enable the CI/CD workflow between Google Cloud Platform and GitHub. 
+Deploying projects on GitHub to Cloud Run can enable the CI/CD workflow between Google Cloud Platform and GitHub.
 
-You now work on deploying a Python Flask web application to the Cloud Run. 
+You now work on deploying a Python Flask web application to the Cloud Run.
 
-In the root path of this repository, a simple Flash application in the `main.py` and the `Dockerfile` is for Cloud Run Service to build and deploy the image. 
+In the root path of this repository, a simple Flash application in the `main.py` and the `Dockerfile` is for Cloud Run Service to build and deploy the image.
 
 The `Dockerfile`:
 
-``` dockerfile
+```dockerfile
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
 FROM python:3.11-slim
@@ -116,15 +111,13 @@ CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 
 In this section, you will focus on the `/` endpoint in the `main.py`:
 
-``` python
+```python
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
     """Example Hello World route."""
 
     return f"Hello World!!!!!!"
 ```
-
-
 
 Please work on the following steps:
 
@@ -148,9 +141,9 @@ Please work on the following steps:
 
 3. Your code is now created and deployed on Cloud Run.
 
-      ![84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a](img/84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a.jpeg)
+   ![84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a](img/84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a.jpeg)
 
-4. Visit the URL  of the `hello_world()` endpoint.
+4. Visit the URL of the `hello_world()` endpoint.
 
    <img src="img/image-20230829105124446.png" alt="image-20230829105124446" style="zoom:50%;" />
 
@@ -166,19 +159,17 @@ Please work on the following steps:
 
    <img src="img/image-20230829105523106.png" alt="image-20230829105523106" style="zoom: 50%;" />
 
-
-
 ## 2.2 Approach 2: Deploy from Local Source Code using Google Cloud CLI
 
 Sometimes, you may want to deploy your local work to the cloud for debugging. One simple way is to deploy your code using **Google Cloud CLI**.
 
-You now work on deploying a Python Flask web application to the Cloud Run. 
+You now work on deploying a Python Flask web application to the Cloud Run.
 
-In the root path of this repository, a Java application demo in folder `skier_app_java` contains all nessary Java servlet code and the `skier_app_java/Dockerfile`.
+In the root path of this repository, a Java application demo in the folder `skier_app_java` contains all necessary Java servlet code and the `skier_app_java/Dockerfile`.
 
 The file builds an image that runs a Java application with Maven.
 
-``` dockerfile
+```dockerfile
 FROM maven:3.9.4-eclipse-temurin-11
 
 COPY . ./project
@@ -187,27 +178,23 @@ WORKDIR ./project
 ENTRYPOINT ["mvn", "clean", "install", "exec:exec", "-Dmaven.test.skip=true"]
 ```
 
-
-
 Please work on the following steps:
 
 1. Once you have installed the CLI tools, you can now deploy this project with the following:
 
-    ``` bash
-    cd ./skier_app_java
-    ```
+   ```bash
+   cd ./skier_app_java
+   ```
 
-    And run:
+   And run:
 
-    ``` bash
-    gcloud run deploy 
-    ```
+   ```bash
+   gcloud run deploy
+   ```
 
 2. Follow the prompt: (1) stay default for source code location; (2) stay default for service name; (3) select region; (4) allow unauthenticated invocations.
 
    ![image-20230829145842650](img/image-20230829145842650.png)
-
-
 
 This will trigger the Cloud Build first to build your image. On the Cloud Build, you will see:
 
@@ -223,13 +210,9 @@ You can now visit the [<your_cloudrun_service_url>/coen6731/public/]() to play w
 
 To continually deploy your local changes, you can re-run the `gcloud run deploy` and use the same service name.
 
-
-
 # 3. Use Case 2: Automated Data Transformation
 
 To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. <u>**We deploy a web application with Cloud Run as the receiver.**</u>
-
-
 
 ## 3.1 Find Out What the Event Message Looks Like
 
@@ -239,13 +222,13 @@ The following process shows how to figure out the event.
 
 Use the Python app of case 1 to reveal that by adding the following endpoint `event_looks` to the web app on `main.py` as the **<u>event receiver</u>**.
 
-``` python
+```python
 @app.route("/event_looks", methods=['POST'])
 def event_looks():
     print(request.method)
     payload = json.loads(request.data)
     print(payload)
-    
+
     return "Event Received"
 ```
 
@@ -273,8 +256,6 @@ Upload one PNG file to the bucket, and then you can get the following message fr
 
 Now you know what is the incoming request from Eventarc.
 
-
-
 ## 3.2 Receive Events for Data Transformation
 
 Program the Python application to get the uploaded file and store it in the BigQuery by using the API Client Libraries:
@@ -283,35 +264,33 @@ Program the Python application to get the uploaded file and store it in the BigQ
 - [Loading CSV data from Cloud Storage](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 - [Cloud Storage Client Libraries](https://cloud.google.com/storage/docs/reference/libraries) (optional)
 
-Before using these libraries, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries. If the code runs on Google Cloud Run, it is set by default, and no action is needed. 
+Before using these libraries, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries. If the code runs on Google Cloud Run, it is set by default, and no action is needed.
 
 But if the code runs locally, follow https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev by just:
 
-``` bash
+```bash
 gcloud auth application-default login
 ```
 
-
-
-There are many ways you could do the loading. One way is to use the Storage Client Libraries to download and upload the file with the BigQuery Client Libraries. The other way is to use the BigQuery Client Libraries to create the table directly from a Cloud Storage URL (starts with `gs://`). 
+There are many ways you could do the loading. One way is to use the Storage Client Libraries to download and upload the file with the BigQuery Client Libraries. The other way is to use the BigQuery Client Libraries to create the table directly from a Cloud Storage URL (starts with `gs://`).
 
 Please read:
 
 - [Loading data from Cloud Storage](https://cloud.google.com/bigquery/docs/batch-loading-data#permissions-load-data-from-cloud-storage).
 - [Loading CSV data into a table](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv#loading_csv_data_into_a_table)
 
-**<u>The following user scenario is presented</u>**: We upload the IRIS dataset to the bucket with Console, and we should be able to query all its data in BigQuery.
+**<u>The following user scenario is presented</u>**: We upload the IRIS dataset to the bucket with the Console, and we should be able to query all its data in BigQuery.
 
-The `main.py` already have the demo code as endpoint `/event_receive` is shown :
+The `main.py` already has the demo code as endpoint `/event_receive` is shown :
 
-``` python
+```python
 @app.route("/event_receive", methods=['POST'])
 def event_receiver():
     payload = json.loads(request.data)
-        
+
     file_name = payload['name']
     bucket_name = payload['bucket']
-    
+
     # Construct a BigQuery client object.
     client = bigquery.Client()
 
@@ -342,7 +321,7 @@ def event_receiver():
 
     destination_table = client.get_table(table_id)  # Make an API request.
     print("Loaded {} rows.".format(destination_table.num_rows))
-    
+
     return "Event Received"
 ```
 
@@ -356,9 +335,7 @@ The `your_dataset` is replaced with the dataset name.
 
 The `your_table_name` is the only term we could decide. In this case, it is `iris`.
 
-
-
-Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel similar as we did before:
+Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel, similar to what we did before:
 
 ![image-20230831161329519](img/image-20230831161329519.png)
 
