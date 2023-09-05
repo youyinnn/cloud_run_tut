@@ -33,9 +33,7 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
 # 1. Preliminary Setup
 
-1. Create a Project Space for your work at https://cloud.google.com/?hl=en.
-
-2. Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install, run init, and select the project you just created.
+1. Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install, run init, and select the project you just created.
 
    Verify if the tools by the command:
 
@@ -53,7 +51,49 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
    gsutil 5.25
    ```
 
-3. Enable Google Cloud APIs:
+2. Create your Project on Google Cloud Console at https://cloud.google.com/?hl=en.
+
+   ![image-20230905141247768](img/image-20230905141247768.png)
+
+3. **<<IMPORTANT>>**: **Set up a billing account for your project**. 
+
+   ![image-20230905140713980](img/image-20230905140713980.png)
+
+   If you are new to the platform, remember that the platform grants you $400+ credits once your billing is linked.
+
+4. Authorization for the gcloud.
+
+   You should log in first:
+
+   ``` bash
+   gcloud auth login
+   ```
+
+   then it will pull up your browser:
+
+   ![image-20230905151121667](img/image-20230905151121667.png)
+
+   Once allowed, you will see:
+
+   ![image-20230905135726013](img/image-20230905135726013.png)
+
+   Verify your login status with:
+
+   ``` bash
+   gcloud auth list
+   ```
+
+5. Config the project to your gcloud:
+
+   ``` bash
+   gcloud config set project <your-project-id>
+   ```
+
+   The project ID can be found while selecting Project in the Console.
+
+   ![img/image-20230829215823372.png](img/image-20230829215823372.png)
+
+6. Enable Google Cloud APIs:
 
    ```bash
    gcloud services enable run.googleapis.com \
@@ -62,7 +102,7 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
        cloudbuild.googleapis.com
    ```
 
-4. (Optional) Install docker in your local to debug with your Dockerfile.
+7. (Optional) Install docker in your local to debug with your Dockerfile.
 
 # 2. Use Case 1: Web Application
 
@@ -329,7 +369,7 @@ Note that the `table_id` strictly follows the format `your-project.your_dataset.
 
 The `your-project` is replaced with the project ID, which can be found while selecting Project in the Console. You may also use the project name.
 
-<img src="img/image-20230829215823372.png" alt="image-20230829215823372" style="zoom: 50%;" />
+![img/image-20230829215823372.png](img/image-20230829215823372.png)
 
 The `your_dataset` is replaced with the dataset name.
 
