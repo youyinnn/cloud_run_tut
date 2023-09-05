@@ -55,7 +55,7 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    ![image-20230905141247768](img/image-20230905141247768.png)
 
-3. **<<IMPORTANT>>**: **Set up a billing account for your project**. 
+3. **<<IMPORTANT>>**: **Set up a billing account for your project**.
 
    ![image-20230905140713980](img/image-20230905140713980.png)
 
@@ -65,7 +65,7 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    You should log in first:
 
-   ``` bash
+   ```bash
    gcloud auth login
    ```
 
@@ -79,13 +79,13 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    Verify your login status with:
 
-   ``` bash
+   ```bash
    gcloud auth list
    ```
 
 5. Config the project to your gcloud:
 
-   ``` bash
+   ```bash
    gcloud config set project <your-project-id>
    ```
 
@@ -93,13 +93,10 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    ![img/image-20230829215823372.png](img/image-20230829215823372.png)
 
-6. Enable Google Cloud APIs:
+6. Enable the following **four** Google Cloud APIs:
 
    ```bash
-   gcloud services enable run.googleapis.com \
-       eventarc.googleapis.com \
-       storage.googleapis.com \
-       cloudbuild.googleapis.com
+   gcloud services enable run.googleapis.com eventarc.googleapis.com storage.googleapis.com cloudbuild.googleapis.com
    ```
 
 7. (Optional) Install docker in your local to debug with your Dockerfile.
