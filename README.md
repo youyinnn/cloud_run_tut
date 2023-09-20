@@ -243,13 +243,25 @@ Please work on the following steps:
 
    ![image-20230829150235776](img/image-20230829150235776.png)
 
-   Then, it will create a Cloud Run Service. On the Cloud Run, you will see:
+   Then, it will create a Cloud Run Service. On the Cloud Run, you will see your endpoint URL:
 
    ![image-20230829150629404](img/image-20230829150629404.png)
 
    You can now visit the [<your_cloudrun_service_url>/coen6731/public/]() to play with the Java Web application.
 
    <img src="img/image-20230829150817603.png" alt="image-20230829150817603" style="zoom: 33%;" />
+
+   On this webpage, two request forms represent the post request and get request.
+
+   Please change the content of the Endpoint URL to your cloud-run server's endpoint. For instance:
+   
+   ![image-20230920150554128](img/image-20230920150554128.png)
+   
+   As my cloud-run server's endpoint is `https://skierappjava-nudsgh3rba-uc.a.run.app`.
+   
+   Then, click the send button, and you should see:
+   
+   ![image-20230920150711867](img/image-20230920150711867.png)
 
 To continually deploy your local changes, you can re-run the `gcloud run deploy` and use the same service name.
 
