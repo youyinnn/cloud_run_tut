@@ -18,7 +18,7 @@ def event_looks():
     payload = json.loads(request.data)
     print(payload)
     
-    return "Event Received"
+    return "Event Received!"
 
 
 @app.route("/event_receive", methods=['POST'])
