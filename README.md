@@ -95,10 +95,10 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    ![img/image-20230829215823372.png](img/image-20230829215823372.png)
 
-6. Enable the following **four** Google Cloud APIs:
+6. Enable the following **six** Google Cloud APIs (Updated):
 
    ```bash
-   gcloud services enable run.googleapis.com eventarc.googleapis.com storage.googleapis.com cloudbuild.googleapis.com
+   gcloud services enable run.googleapis.com eventarc.googleapis.com storage.googleapis.com cloudbuild.googleapis.com iam.googleapis.com iamcredentials.googleapis.com
    ```
 
 7. (Optional) Install docker in your local to debug with your Dockerfile.
