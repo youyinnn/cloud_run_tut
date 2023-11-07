@@ -116,13 +116,15 @@ There are three approaches to deploying your project as services to Cloud Run:
 2. <u>from a GitHub repository;</u>
 3. <u>from your local source code;</u>
 
-This tutorial walks through the last two approaches.
+> **<u>The following user scenario is presented</u>**: 
+>
+> You now work on deploying a Python Flask web application to the **<u>*Cloud Run*</u>** through the last two approaches.
+
+
 
 ## 2.1 Approach 1: Deploy from a Git Repository
 
 Deploying projects on GitHub to Cloud Run can enable the CI/CD workflow between Google Cloud Platform and GitHub.
-
-You now work on deploying a Python Flask web application to the Cloud Run.
 
 In the root path of this repository, a simple Flash application in the `main.py` and the `Dockerfile` is for Cloud Run Service to build and deploy the image.
 
@@ -209,8 +211,6 @@ Please work on the following steps:
 
 Sometimes, you may want to deploy your local work to the cloud for debugging. One simple way is to deploy your code using **Google Cloud CLI**.
 
-You now work on deploying a Python Flask web application to the Cloud Run.
-
 In the root path of this repository, a Java application demo in the folder `skier_app_java` contains all necessary Java servlet code and the `skier_app_java/Dockerfile`.
 
 The file builds an image that runs a Java application with Maven.
@@ -274,6 +274,12 @@ To continually deploy your local changes, you can re-run the `gcloud run deploy`
 
 To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. <u>**We deploy a web application with Cloud Run as the receiver.**</u>
 
+> **<u>The following user scenario is presented</u>**: 
+>
+> We upload the IRIS dataset to the ***<u>Cloud Storage</u>*** bucket with the Console, and we should be able to query all its data in **<u>*BigQuery*</u>**. The automation is done by our **<u>*Cloud Run*</u>** service.
+
+
+
 ## 3.1 Find Out What the Event Message Looks Like
 
 Before that, you need to know <u>how the event has been received and what you will receive</u>.
@@ -295,7 +301,7 @@ def event_looks():
 ### 3.1.1 Steps
 
 1. Deploy it to the Cloud Run as we did in use case 1.
-2. Create a bucket named `cloud_run_tut_bucket`:
+2. Create a **<u>*Cloud Storage*</u>** bucket named `cloud_run_tut_bucket`:
 
    <img src="img/image-20230829173823630.png" alt="image-20230829173823630" style="zoom: 33%;" />
 
@@ -340,7 +346,7 @@ Please read:
 - [Loading data from Cloud Storage](https://cloud.google.com/bigquery/docs/batch-loading-data#permissions-load-data-from-cloud-storage).
 - [Loading CSV data into a table](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv#loading_csv_data_into_a_table)
 
-**<u>The following user scenario is presented</u>**: We upload the IRIS dataset to the bucket with the Console, and we should be able to query all its data in BigQuery.
+
 
 The `main.py` already has the demo code as endpoint `/event_receive`.
 
