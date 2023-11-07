@@ -95,13 +95,18 @@ There is no need to operate on the Cloud Run; just understand the concepts and k
 
    ![img/image-20230829215823372.png](img/image-20230829215823372.png)
 
-6. Enable the following **six** Google Cloud APIs (Updated):
+6. Set up Billing information, add card as payment to your account (this will charge you 1$~2$, and it will be refunded):
+
+   <img width="299" alt="image" src="https://github.com/youyinnn/cloud_run_tut/assets/23525754/e42e2861-8db4-44ec-be21-86dcae38c0a3">
+
+
+7. Enable the following **six** Google Cloud APIs (Updated):
 
    ```bash
    gcloud services enable run.googleapis.com eventarc.googleapis.com storage.googleapis.com cloudbuild.googleapis.com iam.googleapis.com iamcredentials.googleapis.com
    ```
 
-7. (Optional) Install docker in your local to debug with your Dockerfile.
+8. (Optional) Install docker in your local to debug with your Dockerfile.
 
 # 2. Use Case 1: Web Application
 
