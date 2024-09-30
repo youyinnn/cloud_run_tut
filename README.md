@@ -2,8 +2,8 @@
 
 This tutorial will go through three demo projects for two use cases:
 
-1. [Web services: Websites](https://cloud.google.com/run/#section-6);
-2. [Data processing: Lightweight data transformation](https://cloud.google.com/run/#section-6);
+1. [Websites and web applications](https://cloud.google.com/run/#websites-and-web-applications);
+2. [Streaming data processing](https://cloud.google.com/run/?hl=en#streaming-data-processing);
 
 using **Google Cloud Run**, **Cloud Storage**, **Eventarc (pronunciation: event arch)**, and **BigQuery** services of the Google Cloud Platform.
 
@@ -63,11 +63,11 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
 2. Create your Project on Google Cloud Console at https://cloud.google.com/?hl=en.
 
-   ![image-20230905141247768](img/image-20230905141247768.png)
+   ![image-20230905141247768](img/image-a1.png)
 
 3. **<<IMPORTANT>>**: **Set up a billing account for your project**.
 
-   ![image-20230905140713980](img/image-20230905140713980.png)
+   ![image-20230905140713980](img/image-a2.png)
 
    If you are new to the platform, remember that the platform grants you $400+ credits once your billing is linked.
 
@@ -81,11 +81,11 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
    then it will pull up your browser:
 
-   ![image-20230905151121667](img/image-20230905151121667.png)
+   ![image-20230905151121667](img/image-a3.png)
 
    Once allowed, you will see:
 
-   ![image-20230905135726013](img/image-20230905135726013.png)
+   ![image-20230905135726013](img/image-a4.png)
 
    Verify your login status with:
 
@@ -113,7 +113,7 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
    The project ID can be found while selecting Project in the Console.
 
-   ![img/image-20230829215823372.png](img/image-20230829215823372.png)
+   ![img/image-a5.png](img/image-a5.png)
 
 6. Set up Billing information and add a payment to your account (this will charge you refundable 1\$~2\$):
 
@@ -133,17 +133,17 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
 8. (Optional) Install docker in your local to debug with your Dockerfile.
 
-# 3. Use Case 1: Web Application
+# 3. Use Case 1: Websites and web applications
 
 There are three approaches to deploying your project as services to Cloud Run:
 
 1. from a published docker image;
 2. <u>from a GitHub repository;</u>
-3. <u>from your local source code;</u>
+3. <u>from a local source code;</u>
 
 > **<u>The following user scenario is presented</u>**:
 >
-> You now work on deploying two web applications (one Python, one Java) to the Google **<u>_Cloud Run_</u>** through the last two approaches.
+> You now work on deploying two web applications (one Python and one Java) to the Google **<u>_Cloud Run_</u>** through the last two approaches.
 
 ## 3.1 Approach 1: Deploy from a Git Repository
 
@@ -185,7 +185,7 @@ In this section, you will focus on the `/` endpoint in the `main.py`:
 def hello_world():
     """Example Hello World route."""
 
-    return f"Hello World!!!!!!"
+    return f"Hello World!!!@@@!!!"
 ```
 
 Please work on the following steps:
@@ -202,61 +202,81 @@ Please work on the following steps:
 
       2. Setup Cloud Build;
 
-      3. Select GitHub as provider;
+      3. Select GitHub as the provider;
 
-      4. Authorize to your GitHub account;
+      4. Authorize your GitHub account;
 
       5. Select the repository you just cloned;
 
-      6. Install the Googld Cloud Build to your repo;
+      6. Install the Google Cloud Build to your repo;
 
       ![alt text](img/image-s1.png)
 
    3. Select the main branch; Select build type "Dockerfile" and locate the file path `/Dockerfile`.
 
-      <!-- <img src="img/image-20230829104126827.png" alt="image-20230829104126827" style="zoom:50%;" /> -->
-
       ![alt text](img/image-s2.png)
 
    4. Allow unauthenticated invocations and create the service.
 
-      <img src="img/image-20230829104232619.png" alt="image-20230829104232619" style="zoom:50%;" />
+      <img src="img/image-a12.png" alt="image-a12" style="zoom:50%;" />
 
 3. Your code is now created and deployed on Cloud Run.
 
-   ![84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a](img/84EF0266-791E-472D-8BFE-41EEEF86634B_1_201_a.jpeg)
+   ![alt text](img/image-s3.png)
 
 4. Visit the URL of the `hello_world()` endpoint.
 
-   <img src="img/image-20230829105124446.png" alt="image-20230829105124446" style="zoom:50%;" />
+   ![alt text](img/image-s4.png)
 
 5. Make some changes in your code and commit it to the GitHub repository.
 
-   <img src="img/image-20230829105322586.png" alt="image-20230829105322586" style="zoom:50%;" />
+   We remove the @@@ in the code.
+
+   ![alt text](img/image-s5.png)
 
 6. Visit the Build History. You should see a new build is processing.
 
-   <img src="img/image-20230829105418670.png" alt="image-20230829105418670" style="zoom: 33%;" />
+   <img src="img/image-a6.png" alt="image-a6" style="zoom: 33%;" />
 
 7. The change should be updated to the web service.
 
-   <img src="img/image-20230829105523106.png" alt="image-20230829105523106" style="zoom: 50%;" />
+   ![alt text](img/image-s6.png)
 
 ## 3.2 Approach 2: Deploy from Local Source Code using Google Cloud CLI
 
-Sometimes, you may want to deploy your local work to the cloud for debugging. One simple way is to deploy your code using **Google Cloud CLI**.
+Sometimes, you may want to deploy your local work to the cloud for debugging.
 
-In the root path of this repository, a Java application demo in the folder `skier_app_java` contains all necessary Java servlet code and the `skier_app_java/Dockerfile`.
+One simple way is to deploy your code using **Google Cloud CLI**.
+
+In the root path of this repository, a Java application demo in the folder `web_app_java` contains all necessary Java servlet code and the `web_app_java/Dockerfile`.
 
 The file builds an image that runs a Java application with Maven.
 
+This is the `Dockerfile`:
+
 ```dockerfile
-FROM maven:3.9.4-eclipse-temurin-11
+FROM maven:3.9.4-eclipse-temurin-17
 
-COPY . ./project
-WORKDIR ./project
+WORKDIR ./app
+COPY . .
 
-ENTRYPOINT ["mvn", "clean", "install", "exec:exec", "-Dmaven.test.skip=true"]
+RUN ["mvn", "clean", "install", "-Dmaven.test.skip=true"]
+
+ENTRYPOINT ["./mvnw", "spring-boot:run"]
+```
+
+And a simple controller in `src/main/java/com/example/web_app_java/controller/HelloController.java`:
+
+```java
+@RestController
+public class HelloController {
+
+    @GetMapping("/")
+    public String index() {
+        return "Greetings from Spring Boot!";
+    }
+
+}
 ```
 
 Please work on the following steps:
@@ -264,7 +284,7 @@ Please work on the following steps:
 1. Once you have installed the CLI tools, you can now deploy this project with the following:
 
    ```bash
-   cd ./skier_app_java
+   cd ./web_app_java
    ```
 
    And run:
@@ -275,41 +295,31 @@ Please work on the following steps:
 
 2. Follow the prompt: (1) stay default for source code location; (2) stay default for service name; (3) select region; (4) allow unauthenticated invocations.
 
-   ![image-20230829145842650](img/image-20230829145842650.png)
+   ![image-20230829145842650](img/image-a7.png)
 
    This will trigger the Cloud Build first to build your image. On the Cloud Build, you will see:
 
-   ![image-20230829150235776](img/image-20230829150235776.png)
+   ![alt text](img/image-s7.png)
 
    Then, it will create a Cloud Run Service. On the Cloud Run, you will see your endpoint URL:
 
-   ![image-20230829150629404](img/image-20230829150629404.png)
+   ![alt text](img/image-s8.png)
 
-   You can now visit the [<your_cloudrun_service_url>/coen6731/public/]() to play with the Java Web application.
+   You can now visit the URL.
 
-   <img src="img/image-20230829150817603.png" alt="image-20230829150817603" style="zoom: 33%;" />
-
-   On this webpage, two request forms represent the post request and get request.
-
-   Please change the content of the Endpoint URL to your cloud-run server's endpoint. For instance:
-
-   ![image-20230920150554128](img/image-20230920150554128.png)
-
-   As my cloud-run server's endpoint is `https://skierappjava-nudsgh3rba-uc.a.run.app`.
-
-   Then, click the send button, and you should see:
-
-   ![image-20230920150711867](img/image-20230920150711867.png)
+   ![alt text](img/image-s9.png)
 
 To continually deploy your local changes, you can re-run the `gcloud run deploy` and use the same service name.
 
-# 4. Use Case 2: Automated Data Transformation
+# 4. Use Case 2: Streaming data processing
 
 To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. <u>**We deploy a web application with Cloud Run as the receiver.**</u>
 
 > **<u>The following user scenario is presented</u>**:
 >
-> We upload the IRIS dataset to the **_<u>Cloud Storage</u>_** bucket with the Console, and we should be able to query all its data in **<u>_BigQuery_</u>**. The automation is done by our **<u>_Cloud Run_</u>** service.
+> We upload the IRIS dataset to the **_<u>Cloud Storage</u>_** bucket with the Console.
+>
+> We deploy a **<u>_Cloud Run_</u>** service which listens to the upload event and transfers all data in the IRIS.csv file to the **<u>_BigQuery_</u>** table automatically.
 
 ## 4.1 Find Out What the Event Message Looks Like
 
@@ -332,23 +342,23 @@ def event_looks():
 1. Deploy it to the Cloud Run as we did in use case 1.
 2. Create a **<u>_Cloud Storage_</u>** bucket named `cloud_run_tut_bucket`:
 
-   <img src="img/image-20230829173823630.png" alt="image-20230829173823630" style="zoom: 33%;" />
+   <img src="img/image-a13.png" alt="image-a13" style="zoom: 33%;" />
 
 3. Create an Eventarc trigger named `t1`, select the following event type, link it to the `cloud_run_tut_bucket` storage and the `cloud_run_tut` Run service of endpoint `/event_looks` :
 
-   ![image-20230831155312625](img/image-20230831155312625.png)
+   ![image-20230831155312625](img/image-a8.png)
 
    For the event type, you should select the following option since uploading a file creates a new object to the bucket:
 
-   <img src="img/image-20230829175912468.png" alt="image-20230829175912468" style="zoom: 50%;" />
+   <img src="img/image-a14.png" alt="image-a14" style="zoom: 50%;" />
 
    Once the trigger is created, you can find it on the Cloud Run Service page:
 
-   ![image-20230831155926136](img/image-20230831155926136.png)
+   ![image-20230831155926136](img/image-a9.png)
 
 4. Upload one PNG file to the bucket, and then you can get the following message from the LOGS of the service.
 
-   ![image-20230829180753549](img/image-20230829180753549.png)
+   ![image-20230829180753549](img/image-a10.png)
 
    Now you know what is the incoming request from Eventarc.
 
@@ -423,7 +433,7 @@ def event_receiver():
 
 1. Create a BigQuery dataset named `cloud_run_tut_dataset` in BigQuery.
 
-   <img src="img/image-20230829220009774.png" alt="image-20230829220009774" style="zoom: 50%;" />
+   <img src="img/image-a15.png" alt="image-a15" style="zoom: 50%;" />
 
 2. Please replace the `table_id` inside the endpoint `/event_receive` to your case.
 
@@ -431,7 +441,7 @@ def event_receiver():
 
    - The `your-project` is replaced with the project ID, which can be found while selecting Project in the Console. You may also use the project name.
 
-     ![img/image-20230829215823372.png](img/image-20230829215823372.png)
+     ![img/image-a5.png](img/image-a5.png)
 
    - The `your_dataset` is replaced with the dataset name.
 
@@ -441,12 +451,12 @@ def event_receiver():
 
 4. Now, you can upload the `Iris.csv` file in this repository to the bucket.
 
-   <img src="img/image-20230829220434392.png" alt="image-20230829220434392" style="zoom:33%;" />
+   <img src="img/image-a16.png" alt="image-a16" style="zoom:33%;" />
 
    Go to the LOGS of the service. The payload and the number of rows are printed.
 
-   <img src="img/image-20230829220830791.png" alt="image-20230829220830791" style="zoom: 33%;" />
+   <img src="img/image-a17.png" alt="image-a17" style="zoom: 33%;" />
 
 5. Finally, you can query the iris data from the created table in BigQuery:
 
-   ![image-20230829223859264](img/image-20230829223859264.png)
+   ![image-a11](img/image-a11.png)
