@@ -212,7 +212,7 @@ Please work on the following steps:
 
       ![alt text](img/image-s1.png)
 
-   3. Select the main branch; Select build type "Dockerfile" and locate the file path `/Dockerfile`.
+   3. Select the main branch; Select build type "Dockerfile" and locate the file path `/web_app_python/Dockerfile`.
 
       ![alt text](img/image-s2.png)
 
