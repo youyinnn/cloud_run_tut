@@ -447,7 +447,7 @@ def event_receiver():
 
    - The `your_table_name` is the only term we could decide. In this case, it is `iris`.
 
-3. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel, similar to what we did before: ![image-20230831161329519](img/image-20230831161329519.png)
+3. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel, similar to what we did before: ![image-s10](img/image-s10.png)
 
 4. Now, you can upload the `Iris.csv` file in this repository to the bucket.
 
