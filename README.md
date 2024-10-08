@@ -313,13 +313,17 @@ To continually deploy your local changes, you can re-run the `gcloud run deploy`
 
 # 4. Use Case 2: Streaming data processing
 
-To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. <u>**We deploy a web application with Cloud Run as the receiver.**</u>
+To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. 
+
+But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. 
+
+In this TUT, <u>**we deploy a web application with Cloud Run as the receiver.**</u>
 
 > **<u>The following user scenario is presented</u>**:
 >
 > We upload the IRIS dataset to the **_<u>Cloud Storage</u>_** bucket with the Console.
 >
-> We deploy a **<u>_Cloud Run_</u>** service which listens to the upload event and transfers all data in the IRIS.csv file to the **<u>_BigQuery_</u>** table automatically.
+> We deploy a **<u>_Cloud Run_</u>** Python web app service which listens to the upload event and transfers all data in the IRIS.csv file to the **<u>_BigQuery_</u>** table automatically.
 
 ## 4.1 Find Out What the Event Message Looks Like
 
@@ -370,7 +374,9 @@ Program the Python application to get the uploaded file and store it in the BigQ
 - [Loading CSV data from Cloud Storage](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 - [Cloud Storage Client Libraries](https://cloud.google.com/storage/docs/reference/libraries) (optional)
 
-Before using these libraries, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries. If the code runs on Google Cloud Run, it is set by default, and no action is needed.
+Before using these libraries in your local environment, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries. 
+
+> **If the code runs on Google Cloud Run, it is set by default, and no action is needed.**
 
 But if the code runs locally, follow https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev by just:
 
@@ -378,16 +384,21 @@ But if the code runs locally, follow https://cloud.google.com/docs/authenticatio
 gcloud auth application-default login
 ```
 
-There are many ways you could do the loading. One way is to use the Storage Client Libraries to download and upload the file with the BigQuery Client Libraries. The other way is to use the BigQuery Client Libraries to create the table directly from a Cloud Storage URL (starts with `gs://`).
+There are many ways you could do the data loading:
 
-Please read:
+1. use the Storage Client Libraries to download and upload the file with the BigQuery Client Libraries;
+2. use the BigQuery Client Libraries to create the table directly from a Cloud Storage URL (starts with `gs://`).
+
+In this TUT, we will practice the second option. Please read:
 
 - [Loading data from Cloud Storage](https://cloud.google.com/bigquery/docs/batch-loading-data#permissions-load-data-from-cloud-storage).
 - [Loading CSV data into a table](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv#loading_csv_data_into_a_table)
 
-The `main.py` already has the demo code as endpoint `/event_receive`.
+Please define the following Flask API endpoint `/event_receive` in the `main.py`.
 
 ```python
+from google.cloud import bigquery
+
 @app.route("/event_receive", methods=['POST'])
 def event_receiver():
     payload = json.loads(request.data)
@@ -398,12 +409,17 @@ def event_receiver():
     # Construct a BigQuery client object.
     client = bigquery.Client()
 
+    ######################
     # TODO(developer): Set table_id to the ID of the table to create.
     # the format of the table id is:
     # table_id = "your-project.your_dataset.your_table_name"
     # for example, mine was:
-    table_id = f"cloud-tut-397400.cloud_run_tut_dataset.iris"
+    # table_id = f"cloud-tut-397400.cloud_run_tut_dataset.iris"
+    table_id = <fill_in_your_table_id_here>
 
+    ######################
+    # BigQuery API for creating a table from a LoadJob
+    # create a load job with defined schema and source_format
     job_config = bigquery.LoadJobConfig(
         schema=[
             bigquery.SchemaField("Id", "INT64"),
@@ -417,25 +433,38 @@ def event_receiver():
         # The source format defaults to CSV, so the line below is optional.
         source_format=bigquery.SourceFormat.CSV,
     )
+    # Define where to download the csv file
     uri = f"gs://{bucket_name}/{file_name}"
 
+    ######################
+    # Make an API request to create the table from csv file that are stored in the storage bucket
     load_job = client.load_table_from_uri(
         uri, table_id, job_config=job_config
-    )  # Make an API request.
+    )
 
     load_job.result()  # Waits for the job to complete.
 
-    destination_table = client.get_table(table_id)  # Make an API request.
+    ######################
+    # Make an API request to query the table with table_id
+    destination_table = client.get_table(table_id)
     print("Loaded {} rows.".format(destination_table.num_rows))
 
     return "Event Received"
 ```
 
-1. Create a BigQuery dataset named `cloud_run_tut_dataset` in BigQuery.
+Follow these steps to set up the automatic data processing service:
+
+1. Search for "BigQuery" on the Google Cloud console and enable it. Or:
+
+   ``` bash
+   gcloud services enable bigquery.googleapis.com
+   ```
+
+2. Create a BigQuery dataset with id `cloud_run_tut_dataset` in BigQuery.
 
    <img src="img/image-a15.png" alt="image-a15" style="zoom: 50%;" />
 
-2. Please replace the `table_id` inside the endpoint `/event_receive` to your case.
+3. Please replace the `table_id` inside the endpoint `/event_receive` to your case.
 
    Note that the `table_id` strictly follows the format `your-project.your_dataset.your_table_name`.
 
@@ -447,9 +476,9 @@ def event_receiver():
 
    - The `your_table_name` is the only term we could decide. In this case, it is `iris`.
 
-3. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel, similar to what we did before: ![image-s10](img/image-s10.png)
+4. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel. This is simplier that what we did before: ![image-s10](img/image-s10.png)
 
-4. Now, you can upload the `Iris.csv` file in this repository to the bucket.
+5. Now, you can upload the `Iris.csv` file in this repository to the bucket.
 
    <img src="img/image-a16.png" alt="image-a16" style="zoom:33%;" />
 
@@ -457,6 +486,6 @@ def event_receiver():
 
    <img src="img/image-a17.png" alt="image-a17" style="zoom: 33%;" />
 
-5. Finally, you can query the iris data from the created table in BigQuery:
+6. Finally, you can query the iris data from the created table in BigQuery:
 
    ![image-a11](img/image-a11.png)
