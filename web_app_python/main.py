@@ -12,7 +12,7 @@ app = Flask(__name__)
 def hello_world():
     """Example Hello World route."""
 
-    return f"Hello World!!!@@@@!!!"
+    return f"Hello World!!!"
 
 
 @app.route("/event_looks", methods=['POST'])
