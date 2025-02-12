@@ -63,11 +63,11 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
 2. Create your Project on Google Cloud Console at https://cloud.google.com/?hl=en.
 
-   ![image-20230905141247768](img/image-a1.png)
+   ![image-20230905141247768](image/image-a1.png)
 
 3. **<<IMPORTANT>>**: **Set up a billing account for your project**.
 
-   ![image-20230905140713980](img/image-a2.png)
+   ![image-20230905140713980](image/image-a2.png)
 
    If you are new to the platform, remember that the platform grants you $400+ credits once your billing is linked.
 
@@ -81,11 +81,11 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
    then it will pull up your browser:
 
-   ![image-20230905151121667](img/image-a3.png)
+   ![image-20230905151121667](image/image-a3.png)
 
    Once allowed, you will see:
 
-   ![image-20230905135726013](img/image-a4.png)
+   ![image-20230905135726013](image/image-a4.png)
 
    Verify your login status with:
 
@@ -113,7 +113,7 @@ There is no need to operate on the Cloud Run; understand the concepts and know w
 
    The project ID can be found while selecting Project in the Console.
 
-   ![img/image-a5.png](img/image-a5.png)
+   ![image/image-a5.png](image/image-a5.png)
 
 6. Set up Billing information and add a payment to your account (this will charge you refundable 1\$~2\$):
 
@@ -210,37 +210,37 @@ Please work on the following steps:
 
       6. Install the Google Cloud Build to your repo;
 
-      ![alt text](img/image-s1.png)
+      ![alt text](image/image-s1.png)
 
    3. Select the main branch; Select build type "Dockerfile" and locate the file path `/web_app_python/Dockerfile`.
 
-      ![alt text](img/image-s2.png)
+      ![alt text](image/image-s2.png)
 
    4. Allow unauthenticated invocations and create the service.
 
-      <img src="img/image-a12.png" alt="image-a12" style="zoom:50%;" />
+      <img src="image/image-a12.png" alt="image-a12" style="zoom:50%;" />
 
 3. Your code is now created and deployed on Cloud Run.
 
-   ![alt text](img/image-s3.png)
+   ![alt text](image/image-s3.png)
 
 4. Visit the URL of the `hello_world()` endpoint.
 
-   ![alt text](img/image-s4.png)
+   ![alt text](image/image-s4.png)
 
 5. Make some changes in your code and commit it to the GitHub repository.
 
    We remove the @@@ in the code.
 
-   ![alt text](img/image-s5.png)
+   ![alt text](image/image-s5.png)
 
 6. Visit the Build History. You should see a new build is processing.
 
-   <img src="img/image-a6.png" alt="image-a6" style="zoom: 33%;" />
+   <img src="image/image-a6.png" alt="image-a6" style="zoom: 33%;" />
 
 7. The change should be updated to the web service.
 
-   ![alt text](img/image-s6.png)
+   ![alt text](image/image-s6.png)
 
 ## 3.2 Approach 2: Deploy from Local Source Code using Google Cloud CLI
 
@@ -295,27 +295,104 @@ Please work on the following steps:
 
 2. Follow the prompt: (1) stay default for source code location; (2) stay default for service name; (3) select region; (4) allow unauthenticated invocations.
 
-   ![image-20230829145842650](img/image-a7.png)
+   ![image-20230829145842650](image/image-a7.png)
 
    This will trigger the Cloud Build first to build your image. On the Cloud Build, you will see:
 
-   ![alt text](img/image-s7.png)
+   ![alt text](image/image-s7.png)
 
    Then, it will create a Cloud Run Service. On the Cloud Run, you will see your endpoint URL:
 
-   ![alt text](img/image-s8.png)
+   ![alt text](image/image-s8.png)
 
    You can now visit the URL.
 
-   ![alt text](img/image-s9.png)
+   ![alt text](image/image-s9.png)
 
 To continually deploy your local changes, you can re-run the `gcloud run deploy` and use the same service name.
 
+## 3.3 Approach 2 + GitHub Action +`gcloud` CLI
+
+The following materials are involved:
+
+1. https://github.com/google-github-actions/auth
+2. https://github.com/google-github-actions/setup-gcloud
+
+### Step 1: Setup Credentials
+
+Please follow: https://github.com/google-github-actions/auth?tab=readme-ov-file#service-account-key-json
+
+Or:
+
+1. Create a new service account
+
+   ![image-20250212102535148 AM](./image//image-20250212102535148 AM.png)
+
+2. Grant the following roles for the service account by accessing the "IAM & Admin" section of the GCP.
+
+   ![image-20250212104811706 AM](./image//image-20250212104811706 AM.png)
+
+3. Create your service account key
+
+   ![image-20250212105944244 AM](./image//image-20250212105944244 AM.png)
+
+
+
+### Step 2: Develop the workflow file
+
+``` yaml
+name: build site
+
+on: push
+
+jobs:
+  gcloud:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - name: "GGA-Auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: "${{ vars.PROJECT_ID }}"
+          credentials_json: "${{ secrets.GCP_SA_CREDENTIAL_JSON }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Info"
+        run: |
+          gcloud info
+
+      - name: "Deploy"
+        run: |
+          cd web_app_python
+          gcloud run deploy cloud-run-tut-ga-demo --source . --allow-unauthenticated -q --region us-east1
+
+```
+
+
+
+### Step 3: Test with ACT before pushing to GitHub to debug the workflow
+
+[ACT](https://github.com/nektos/act) is a powerful tool to develop, debug, and verify your GitHub workflow in your local.
+
+You may put the service account key JSON file under the repo and rename it with postfix `.sa.secret.json`, as it is configured to be ignored by git.
+
+Run ACT to test the workflow with the given secret and variable.
+
+```bash
+act push -W .github/workflows/gcloud.yml -j gcloud -s GCP_SA_CREDENTIAL_JSON="$(cat <YOUR JSON FILE PATH>)" --var PROJECT_ID="cloud-tut-437202"
+```
+
 # 4. Use Case 2: Streaming data processing
 
-To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console. 
+To implement the use case, the basic process would be like https://cloud.google.com/eventarc/docs/run/create-trigger-storage-console.
 
-But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery. 
+But you need to have your **<u>event receiver</u>** that receives the file upload events and hand it to BigQuery.
 
 In this TUT, <u>**we deploy a web application with Cloud Run as the receiver.**</u>
 
@@ -346,23 +423,23 @@ def event_looks():
 1. Deploy it to the Cloud Run as we did in use case 1.
 2. Create a **<u>_Cloud Storage_</u>** bucket named `cloud_run_tut_bucket`:
 
-   <img src="img/image-a13.png" alt="image-a13" style="zoom: 33%;" />
+   <img src="image/image-a13.png" alt="image-a13" style="zoom: 33%;" />
 
 3. Create an Eventarc trigger named `t1`, select the following event type, link it to the `cloud_run_tut_bucket` storage and the `cloud_run_tut` Run service of endpoint `/event_looks` :
 
-   ![image-20230831155312625](img/image-a8.png)
+   ![image-20230831155312625](image/image-a8.png)
 
    For the event type, you should select the following option since uploading a file creates a new object to the bucket:
 
-   <img src="img/image-a14.png" alt="image-a14" style="zoom: 50%;" />
+   <img src="image/image-a14.png" alt="image-a14" style="zoom: 50%;" />
 
    Once the trigger is created, you can find it on the Cloud Run Service page:
 
-   ![image-20230831155926136](img/image-a9.png)
+   ![image-20230831155926136](image/image-a9.png)
 
 4. Upload one PNG file to the bucket, and then you can get the following message from the LOGS of the service.
 
-   ![image-20230829180753549](img/image-a10.png)
+   ![image-20230829180753549](image/image-a10.png)
 
    Now you know what is the incoming request from Eventarc.
 
@@ -374,7 +451,7 @@ Program the Python application to get the uploaded file and store it in the BigQ
 - [Loading CSV data from Cloud Storage](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 - [Cloud Storage Client Libraries](https://cloud.google.com/storage/docs/reference/libraries) (optional)
 
-Before using these libraries in your local environment, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries. 
+Before using these libraries in your local environment, you must set up the authentication: https://cloud.google.com/docs/authentication/client-libraries.
 
 > **If the code runs on Google Cloud Run, it is set by default, and no action is needed.**
 
@@ -456,13 +533,13 @@ Follow these steps to set up the automatic data processing service:
 
 1. Search for "BigQuery" on the Google Cloud console and enable it. Or:
 
-   ``` bash
+   ```bash
    gcloud services enable bigquery.googleapis.com
    ```
 
 2. Create a BigQuery dataset with id `cloud_run_tut_dataset` in BigQuery.
 
-   <img src="img/image-a15.png" alt="image-a15" style="zoom: 50%;" />
+   <img src="image/image-a15.png" alt="image-a15" style="zoom: 50%;" />
 
 3. Please replace the `table_id` inside the endpoint `/event_receive` to your case.
 
@@ -470,22 +547,22 @@ Follow these steps to set up the automatic data processing service:
 
    - The `your-project` is replaced with the project ID, which can be found while selecting Project in the Console. You may also use the project name.
 
-     ![img/image-a5.png](img/image-a5.png)
+     ![image/image-a5.png](image/image-a5.png)
 
    - The `your_dataset` is replaced with the dataset name.
 
    - The `your_table_name` is the only term we could decide. In this case, it is `iris`.
 
-4. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel. This is simplier that what we did before: ![image-s10](img/image-s10.png)
+4. Then, create a new Eventarc trigger for the endpoint `/event_receive` on the Cloud Run service's TRIGGER panel. This is simplier that what we did before: ![image-s10](image/image-s10.png)
 
 5. Now, you can upload the `Iris.csv` file in this repository to the bucket.
 
-   <img src="img/image-a16.png" alt="image-a16" style="zoom:33%;" />
+   <img src="image/image-a16.png" alt="image-a16" style="zoom:33%;" />
 
    Go to the LOGS of the service. The payload and the number of rows are printed.
 
-   <img src="img/image-a17.png" alt="image-a17" style="zoom: 33%;" />
+   <img src="image/image-a17.png" alt="image-a17" style="zoom: 33%;" />
 
 6. Finally, you can query the iris data from the created table in BigQuery:
 
-   ![image-a11](img/image-a11.png)
+   ![image-a11](image/image-a11.png)
