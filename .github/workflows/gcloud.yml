@@ -1,0 +1,30 @@
+name: build site
+
+on: push
+
+jobs:
+  gcloud:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - uses: "actions/checkout@v4"
+
+      - name: "GGA-Auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          project_id: "${{ vars.PROJECT_ID }}"
+          credentials_json: "${{ secrets.GCP_SA_CREDENTIAL_JSON }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Info"
+        run: |
+          gcloud info
+
+      - name: "Deploy"
+        run: |
+          cd web_app_python
+          gcloud run deploy cloud-run-tut-ga-demo --source . --allow-unauthenticated -q --region us-east1

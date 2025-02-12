@@ -42,3 +42,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+*.sa.secret.json
